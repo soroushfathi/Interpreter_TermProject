@@ -9,4 +9,5 @@ sum = sum + z
 sum = sum + w
 print sum
 x = sum / y
+print z
 print x

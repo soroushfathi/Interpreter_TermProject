@@ -1,9 +1,9 @@
-package main;
+package com;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -19,19 +19,22 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-
+                Window window = new Window();
+                window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                window.setVisible(true);
+                window.toFront();
             }
         });
-        try {
+//        try {
 //            readConfig(file2);
-            read_compute(xFile2);
+//            read_compute(xFile2);
 //            read_compute(xFile1);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.err.println("File Not Found!");
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            System.err.println("File Not Found!");
+//        } catch (IOException ioException) {
+//            ioException.printStackTrace();
+//        }
 //        System.out.println(intValues);
 //        System.out.println(floatValues);
     }
@@ -44,24 +47,31 @@ public class Main {
 //            System.out.println(Arrays.toString(splited));
             if (line.trim().equals("%%"))
                 break;
-            if (intValues.containsKey(splited[1]) || floatValues.containsKey(splited[1]))
+            boolean isEmpty = line.isBlank();
+            if (!isEmpty && intValues.containsKey(splited[1]) || floatValues.containsKey(splited[1]))
                 throw new IllegalArgumentException("Duplicated variable");
-            if (splited[0].equals("int")) {
-                if (splited.length==4)
-                    intValues.put(splited[1], Integer.parseInt(splited[3]));
-                else if (splited.length==2)
+            if (!isEmpty && splited[0].equals("int")) {
+                if (splited.length == 4){
+                    if (intValues.containsKey(splited[3]))
+                        intValues.put(splited[1], intValues.get(splited[3]));
+                    else if (!intValues.containsKey(splited[3]))
+                        intValues.put(splited[1], Integer.parseInt(splited[3]));
+                }else if (splited.length==2)
                     intValues.put(splited[1],0);
-            } else if (splited[0].equals("float")) {
-                if (splited.length==4)
-                    floatValues.put(splited[1], Float.parseFloat(splited[3]));
-                else if (splited.length==2)
+            } else if (!isEmpty && splited[0].equals("float")) {
+                if (splited.length == 4){
+                    if (floatValues.containsKey(splited[3]))
+                        floatValues.put(splited[1], floatValues.get(splited[3]));
+                    else if (!floatValues.containsKey(splited[3]))
+                        floatValues.put(splited[1], Float.parseFloat(splited[3]));
+                }else if (splited.length==2)
                     floatValues.put(splited[1],0.0f);
             }
         }
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();
             String[] splited = line.split("[\\s]+");
-            System.out.println(Arrays.toString(splited));
+//            System.out.println(Arrays.toString(splited));
             compute(scanner, splited);
         }
     }

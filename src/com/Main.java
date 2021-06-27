@@ -25,25 +25,13 @@ public class Main {
                 window.toFront();
             }
         });
-//        try {
-//            readConfig(file2);
-//            read_compute(xFile2);
-//            read_compute(xFile1);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//            System.err.println("File Not Found!");
-//        } catch (IOException ioException) {
-//            ioException.printStackTrace();
-//        }
-//        System.out.println(intValues);
-//        System.out.println(floatValues);
     }
     public static void read_compute(File file) throws IOException, IllegalArgumentException, ArithmeticException{
         FileReader fileReader = new FileReader(file);
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            String[] splited = line.split("[\\s]+");
+            String[] splited = line.trim().split("[\\s]+");
 //            System.out.println(Arrays.toString(splited));
             if (line.trim().equals("%%"))
                 break;
@@ -70,18 +58,18 @@ public class Main {
         }
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();
-            String[] splited = line.split("[\\s]+");
+            String[] splited = line.trim().split("[\\s]+");
 //            System.out.println(Arrays.toString(splited));
             compute(scanner, splited);
         }
     }
 
-    public static void compute(Scanner scanner, String[] splited){
+    public static void compute(Scanner scanner, String[] splited) throws IOException {
         if(splited[0].equals("for")){
             ArrayList<String> forLines = new ArrayList<>();
             int i=0;
             while (true){
-                forLines.add(scanner.nextLine());
+                forLines.add(scanner.nextLine().trim());
                 if (forLines.get(i).trim().equals("end for")){
                     forLines.remove(i);
                     break;
@@ -90,14 +78,20 @@ public class Main {
             }
             for (int j = 0; j < Integer.parseInt(splited[1]); j++) {
                 for (String str : forLines) {
-                    compute(scanner,str.split("[\\s]+"));
+                    compute(scanner,str.trim().split("[\\s]+"));
                 }
             }
         }else if(splited[0].equals("print")){
-            if (intValues.containsKey(splited[1]))
+            FileWriter fr = new FileWriter("output.txt",false);
+            BufferedWriter br = new BufferedWriter(fr);
+            if (intValues.containsKey(splited[1])){
                 System.out.println(intValues.get(splited[1]));
-            else
+                br.write(String.valueOf(intValues.get(splited[1])));
+            } else{
                 System.out.println(floatValues.get(splited[1]));
+                br.write(String.valueOf(floatValues.get(splited[1])));
+            }
+            br.close();
         } else if (splited[3].equals("+")){
             if (intValues.containsKey(splited[0]))
                 if(intValues.containsKey(splited[2]) && intValues.containsKey(splited[4]))

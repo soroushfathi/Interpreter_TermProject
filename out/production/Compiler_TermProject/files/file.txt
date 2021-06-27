@@ -1,4 +1,8 @@
-int y = 6
-
+ int x = 4
+   float PI = 3.14
 %%
-print y
+print PI
+for 3 
+   x    = x + 2
+end for
+print x

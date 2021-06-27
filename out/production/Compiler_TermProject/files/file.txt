@@ -1,8 +1,8 @@
- int x = 4
-   float PI = 3.14
+int x = 4
+  float PI  = 3.14
 %%
 print PI
 for 3 
-   x    = x + 2
+   x =  x * 2
 end for
 print x

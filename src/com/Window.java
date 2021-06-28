@@ -50,11 +50,11 @@ public class Window extends JFrame {
                     Main.intValues.clear();
                     Main.floatValues.clear();
                 }
-                JOptionPane.showMessageDialog(null,"code compiled");
+                JOptionPane.showMessageDialog(null,"Code Compiled");
                 System.out.println("-------------------------------------------------------------------");
             }
         });
-        string = txtArea.getText();
+//        string = txtArea.getText();
         scrollPane.setBounds(10,60,780,500);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         panel.add(scrollPane);
@@ -76,23 +76,23 @@ public class Window extends JFrame {
         sizeBox.addItem("18");
         ActionListener fontSizeListener = e -> {
             String font = (String) fontBox.getSelectedItem();
-            if (sizeBox.getSelectedIndex()==0)
+            if (sizeBox.getSelectedIndex()==1)
                 txtArea.setFont(new Font(font,Font.PLAIN,10));
-            else if (sizeBox.getSelectedIndex()==1)
-                txtArea.setFont(new Font(font,Font.PLAIN,11));
             else if (sizeBox.getSelectedIndex()==2)
-                txtArea.setFont(new Font(font,Font.PLAIN,12));
+                txtArea.setFont(new Font(font,Font.PLAIN,11));
             else if (sizeBox.getSelectedIndex()==3)
-                txtArea.setFont(new Font(font,Font.PLAIN,13));
+                txtArea.setFont(new Font(font,Font.PLAIN,12));
             else if (sizeBox.getSelectedIndex()==4)
-                txtArea.setFont(new Font(font,Font.PLAIN,14));
+                txtArea.setFont(new Font(font,Font.PLAIN,13));
             else if (sizeBox.getSelectedIndex()==5)
-                txtArea.setFont(new Font(font,Font.PLAIN,15));
+                txtArea.setFont(new Font(font,Font.PLAIN,14));
             else if (sizeBox.getSelectedIndex()==6)
-                txtArea.setFont(new Font(font,Font.PLAIN,16));
+                txtArea.setFont(new Font(font,Font.PLAIN,15));
             else if (sizeBox.getSelectedIndex()==7)
-                txtArea.setFont(new Font(font,Font.PLAIN,17));
+                txtArea.setFont(new Font(font,Font.PLAIN,16));
             else if (sizeBox.getSelectedIndex()==8)
+                txtArea.setFont(new Font(font,Font.PLAIN,17));
+            else if (sizeBox.getSelectedIndex()==9)
                 txtArea.setFont(new Font(font,Font.PLAIN,18));
         };
         sizeBox.addActionListener(fontSizeListener);
@@ -103,13 +103,13 @@ public class Window extends JFrame {
         fontBox.addItem(Font.MONOSPACED);
         fontBox.addItem("Times new roman");
         ActionListener fontListener = e -> {
-            int fontSize = sizeBox.getSelectedIndex()+10;
+            int fontSize = sizeBox.getSelectedIndex()+9;
             txtArea.setFont(new Font(Objects.requireNonNull(fontBox.getSelectedItem()).toString(),Font.PLAIN,fontSize));
         };
         ActionListener checkBoxListener = e -> {
             String font = (String) fontBox.getSelectedItem();
-            int fontSize = sizeBox.getSelectedIndex()+10;
-            int mode =0;
+            int fontSize = sizeBox.getSelectedIndex()+9;
+            int mode = 0;
             if (boldCheckbox.isSelected())
                 mode += Font.BOLD;
             if (italicCheckbox.isSelected())

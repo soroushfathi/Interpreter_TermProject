@@ -1,8 +1,11 @@
-int x = 4
-  float PI  = 3.14
+int  x = 3
+ float    PI = 3.14
+    int  z  = x
+ int y 
+float erea
 %%
-print PI
-for 3 
-   x =  x * 2
-end for
-print x
+for 4
+  z  = z * 2
+y  = x + z
+print y
+   end for

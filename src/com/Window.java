@@ -1,6 +1,7 @@
 package com;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,8 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Objects;
 
 public class Window extends JFrame {
     JButton button;
@@ -29,7 +29,8 @@ public class Window extends JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        setSize(500,300);
+        setSize(510,350);
+        setResizable(false);
         JTextArea txtArea = new JTextArea(10,30);
         JScrollPane scrollPane = new JScrollPane(txtArea);
 
@@ -59,49 +60,79 @@ public class Window extends JFrame {
         panel.add(scrollPane);
         JCheckBox boldCheckbox = new JCheckBox("Bold",false);
         JCheckBox italicCheckbox = new JCheckBox("Italic",false);
-        ButtonGroup buttonGroup = new ButtonGroup();
-        JRadioButton small = new JRadioButton("small");
-        buttonGroup.add(small);
-        JRadioButton medium = new JRadioButton("medium");
-        buttonGroup.add(medium);
-        JRadioButton large = new JRadioButton("large");
-        buttonGroup.add(large);
-        ActionListener checkBoxListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int mode =0;
-                if (boldCheckbox.isSelected())
-                    mode += Font.BOLD;
-                if (italicCheckbox.isSelected())
-                    mode += Font.ITALIC;
-                txtArea.setFont(new Font(Font.SANS_SERIF,mode,14));
-            }
+        eastPanel.add(boldCheckbox);
+        eastPanel.add(italicCheckbox);
+        JComboBox<String> sizeBox = new JComboBox<>();
+        JComboBox<String> fontBox = new JComboBox<>();
+        sizeBox.addItem("Font Size");
+        sizeBox.addItem("10");
+        sizeBox.addItem("11");
+        sizeBox.addItem("12");
+        sizeBox.addItem("13");
+        sizeBox.addItem("14");
+        sizeBox.addItem("15");
+        sizeBox.addItem("16");
+        sizeBox.addItem("17");
+        sizeBox.addItem("18");
+        ActionListener fontSizeListener = e -> {
+            String font = (String) fontBox.getSelectedItem();
+            if (sizeBox.getSelectedIndex()==0)
+                txtArea.setFont(new Font(font,Font.PLAIN,10));
+            else if (sizeBox.getSelectedIndex()==1)
+                txtArea.setFont(new Font(font,Font.PLAIN,11));
+            else if (sizeBox.getSelectedIndex()==2)
+                txtArea.setFont(new Font(font,Font.PLAIN,12));
+            else if (sizeBox.getSelectedIndex()==3)
+                txtArea.setFont(new Font(font,Font.PLAIN,13));
+            else if (sizeBox.getSelectedIndex()==4)
+                txtArea.setFont(new Font(font,Font.PLAIN,14));
+            else if (sizeBox.getSelectedIndex()==5)
+                txtArea.setFont(new Font(font,Font.PLAIN,15));
+            else if (sizeBox.getSelectedIndex()==6)
+                txtArea.setFont(new Font(font,Font.PLAIN,16));
+            else if (sizeBox.getSelectedIndex()==7)
+                txtArea.setFont(new Font(font,Font.PLAIN,17));
+            else if (sizeBox.getSelectedIndex()==8)
+                txtArea.setFont(new Font(font,Font.PLAIN,18));
+        };
+        sizeBox.addActionListener(fontSizeListener);
+
+        fontBox.addItem("Set Font");
+        fontBox.addItem(Font.SANS_SERIF);
+        fontBox.addItem(Font.DIALOG);
+        fontBox.addItem(Font.MONOSPACED);
+        fontBox.addItem("Times new roman");
+        ActionListener fontListener = e -> {
+            int fontSize = sizeBox.getSelectedIndex()+10;
+            txtArea.setFont(new Font(Objects.requireNonNull(fontBox.getSelectedItem()).toString(),Font.PLAIN,fontSize));
+        };
+        ActionListener checkBoxListener = e -> {
+            String font = (String) fontBox.getSelectedItem();
+            int fontSize = sizeBox.getSelectedIndex()+10;
+            int mode =0;
+            if (boldCheckbox.isSelected())
+                mode += Font.BOLD;
+            if (italicCheckbox.isSelected())
+                mode += Font.ITALIC;
+            txtArea.setFont(new Font(font,mode,fontSize));
         };
         boldCheckbox.addActionListener(checkBoxListener);
         italicCheckbox.addActionListener(checkBoxListener);
-        eastPanel.add(boldCheckbox);
-        eastPanel.add(italicCheckbox);
-        eastPanel.add(small);
-        eastPanel.add(medium);
-        eastPanel.add(large);
-        ActionListener sizeListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (small.isSelected())
-                    txtArea.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,10));
-                else if (medium.isSelected())
-                    txtArea.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,13));
-                else if (large.isSelected())
-                    txtArea.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,17));
-            }
-        };
-        small.addActionListener(sizeListener);
-        medium.addActionListener(sizeListener);
-        large.addActionListener(sizeListener);
-        southPanel.add(button);
+        fontBox.addActionListener(fontListener);
 
+        eastPanel.add(fontBox);
+        eastPanel.add(sizeBox);
+        Border border = BorderFactory.createTitledBorder("settings");
+        Border runBorder = BorderFactory.createRaisedBevelBorder();
+        Border panelBorder = BorderFactory.createBevelBorder(15,Color.CYAN,Color.blue,Color.black,Color.ORANGE);
+        eastPanel.setBorder(border);
+        southPanel.setBorder(runBorder);
+        panel.setBorder(panelBorder);
+        southPanel.add(button);
         panel.add(southPanel,BorderLayout.SOUTH);
         panel.add(eastPanel,BorderLayout.EAST);
+        panel.setBackground(Color.PINK.darker());
+        eastPanel.setBackground(Color.LIGHT_GRAY);
         add(panel);
     }
 }

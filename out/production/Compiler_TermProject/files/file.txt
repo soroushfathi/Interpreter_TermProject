@@ -1,9 +1,5 @@
-int x = 4
-int y = x
-%% 
-for 5
-x = x + 1 
-y = x * 3
-end for
-print y
+int x = 3 
+  int    z =   5
+    int y =   z
+%%
 print x

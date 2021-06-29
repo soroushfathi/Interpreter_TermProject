@@ -17,7 +17,75 @@ public class Window extends JFrame {
     JPanel panel;
     JPanel southPanel;
     JPanel eastPanel;
+    JTextArea txtArea;
     public Window() throws HeadlessException {
+        // MenuBar
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        JMenu fileMenu = new JMenu("file");
+        menuBar.add(fileMenu);
+        Action loadAction = new AbstractAction("load file",new ImageIcon("src\\assets\\load.png")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        };
+        Action saveAction = new AbstractAction("save file",new ImageIcon("src\\assets\\save.png")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String path = JOptionPane.showInputDialog("enter the path to save the file");
+                try {
+                    FileWriter fr = new FileWriter(path);
+                    BufferedWriter br = new BufferedWriter(fr);
+                    String lines = txtArea.getText();
+                    br.write(lines);
+                    br.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        };
+        Action saveRunAction = new AbstractAction("save compiled") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    FileWriter fw = new FileWriter("src\\files\\file.txt",false);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    string = txtArea.getText();
+                    bw.write(string);
+                    bw.close();
+                    Main.outputPath = JOptionPane.showInputDialog("enter the path ","ex : C:\\\\folderName\\\\fileName.txt");
+                    Main.read_compute(new File("src\\files\\file.txt"));
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } finally {
+                    Main.intValues.clear();
+                    Main.floatValues.clear();
+                }
+                JOptionPane.showMessageDialog(null,"Code Compiled");
+                System.out.println("-------------------------------------------------------------------");
+            }
+        };
+        Action clearAction = new AbstractAction("clear",new ImageIcon("src\\assets\\clear.png")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtArea.setText("");
+            }
+        };
+        fileMenu.add(loadAction);
+        fileMenu.add(saveAction);
+        fileMenu.add(saveRunAction);
+        fileMenu.add(clearAction);
+        ActionListener menuListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(fileMenu.getItemCount()==0){
+                    System.out.println("load");
+                }
+            }
+        };
+        fileMenu.addActionListener(menuListener);
+
         panel = new JPanel();
         southPanel = new JPanel();
         eastPanel = new JPanel();
@@ -29,9 +97,9 @@ public class Window extends JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        setSize(510,350);
+        setSize(515,350);
         setResizable(false);
-        JTextArea txtArea = new JTextArea(10,30);
+        txtArea = new JTextArea(10,30);
         JScrollPane scrollPane = new JScrollPane(txtArea);
 
         button = new JButton("Run");
@@ -43,6 +111,7 @@ public class Window extends JFrame {
                     string = txtArea.getText();
                     bw.write(string);
                     bw.close();
+                    Main.outputPath = JOptionPane.showInputDialog("enter the path ","ex : C:\\\\folderName\\\\fileName.txt");
                     Main.read_compute(new File("src\\files\\file.txt"));
                 } catch (IOException ioException) {
                     ioException.printStackTrace();

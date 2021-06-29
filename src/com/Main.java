@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Main {
     public static HashMap<String,Integer> intValues = new HashMap<>();
     public static HashMap<String,Float> floatValues = new HashMap<>();
-
+    public static String outputPath = "output.txt";
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -80,65 +80,15 @@ public class Main {
                 }
             }
         }else if(splited[0].equals("print")){
-            FileWriter fr = new FileWriter("output.txt",false);
-            BufferedWriter br = new BufferedWriter(fr);
-            if (intValues.containsKey(splited[1])){
-                System.out.println(intValues.get(splited[1]));
-                br.write(String.valueOf(intValues.get(splited[1])));
-            } else{
-                System.out.println(floatValues.get(splited[1]));
-                br.write(String.valueOf(floatValues.get(splited[1])));
-            }
-            br.close();
+            FilePrinter filePrinter = new FilePrinter(splited,outputPath);
         } else if (splited[3].equals("+")){
             Sum sum = new Sum(splited);
         } else if (splited[3].equals("-")){
-            if (intValues.containsKey(splited[0]))
-                if(intValues.containsKey(splited[2]) && intValues.containsKey(splited[4]))
-                    intValues.computeIfPresent(splited[0],(k,v)->intValues.get(splited[2])-intValues.get(splited[4]));
-                else if(intValues.containsKey(splited[2]) && !intValues.containsKey(splited[4]))
-                    intValues.computeIfPresent(splited[0],(k,v)->intValues.get(splited[2])-Integer.parseInt(splited[4]));
-                else if(!intValues.containsKey(splited[2]) && intValues.containsKey(splited[4]))
-                    intValues.computeIfPresent(splited[0],(k,v)-> Integer.parseInt(splited[2])-intValues.get(splited[4]));
-            else if (floatValues.containsKey(splited[0]))
-                    if(floatValues.containsKey(splited[2]) && floatValues.containsKey(splited[4]))
-                        floatValues.computeIfPresent(splited[0],(k,v)->floatValues.get(splited[2])-floatValues.get(splited[4]));
-                    else if(floatValues.containsKey(splited[2]) && !floatValues.containsKey(splited[4]))
-                        floatValues.computeIfPresent(splited[0],(k,v)->floatValues.get(splited[2])-Float.parseFloat(splited[4]));
-                    else if(!floatValues.containsKey(splited[2]) && floatValues.containsKey(splited[4]))
-                        floatValues.computeIfPresent(splited[0],(k,v)-> Float.parseFloat(splited[2])-floatValues.get(splited[4]));
+            Subtraction subtraction = new Subtraction(splited);
         } else if (splited[3].equals("*")){
-            if (intValues.containsKey(splited[0]))
-                if(intValues.containsKey(splited[2]) && intValues.containsKey(splited[4]))
-                    intValues.computeIfPresent(splited[0],(k,v)->intValues.get(splited[2])*intValues.get(splited[4]));
-                else if(intValues.containsKey(splited[2]) && !intValues.containsKey(splited[4]))
-                    intValues.computeIfPresent(splited[0],(k,v)->intValues.get(splited[2])*Integer.parseInt(splited[4]));
-                else if(!intValues.containsKey(splited[2]) && intValues.containsKey(splited[4]))
-                    intValues.computeIfPresent(splited[0],(k,v)-> Integer.parseInt(splited[2])*intValues.get(splited[4]));
-            else if (floatValues.containsKey(splited[0]))
-                    if(floatValues.containsKey(splited[2]) && floatValues.containsKey(splited[4]))
-                        floatValues.computeIfPresent(splited[0],(k,v)->floatValues.get(splited[2])*floatValues.get(splited[4]));
-                    else if(floatValues.containsKey(splited[2]) && !floatValues.containsKey(splited[4]))
-                        floatValues.computeIfPresent(splited[0],(k,v)->floatValues.get(splited[2])*Float.parseFloat(splited[4]));
-                    else if(!floatValues.containsKey(splited[2]) && floatValues.containsKey(splited[4]))
-                        floatValues.computeIfPresent(splited[0],(k,v)-> Float.parseFloat(splited[2])*floatValues.get(splited[4]));
+            Multiple multiple = new Multiple(splited);
         } else if (splited[3].equals("/")){
-            if (intValues.containsKey(splited[0]))
-                if(intValues.containsKey(splited[2]) && intValues.containsKey(splited[4]) && intValues.get(splited[4])!=0)
-                    intValues.computeIfPresent(splited[0],(k,v)->intValues.get(splited[2])/intValues.get(splited[4]));
-                else if(intValues.containsKey(splited[2]) && !intValues.containsKey(splited[4]) && Integer.parseInt(splited[4])!=0)
-                    intValues.computeIfPresent(splited[0],(k,v)->intValues.get(splited[2])/Integer.parseInt(splited[4]));
-                else if(!intValues.containsKey(splited[2]) && intValues.containsKey(splited[4]) && intValues.get(splited[4])!=0)
-                    intValues.computeIfPresent(splited[0],(k,v)-> Integer.parseInt(splited[2])/intValues.get(splited[4]));
-                else
-                    throw new ArithmeticException();
-            else if (floatValues.containsKey(splited[0]))
-                if (floatValues.containsKey(splited[2]) && floatValues.containsKey(splited[4]) && floatValues.get(splited[4])!=0)
-                    floatValues.computeIfPresent(splited[0],(k,v)->floatValues.get(splited[2])/floatValues.get(splited[4]));
-                else if (floatValues.containsKey(splited[2]) && !intValues.containsKey(splited[4]) && Float.parseFloat(splited[4])!=0)
-                    floatValues.computeIfPresent(splited[0],(k,v)->floatValues.get(splited[2])/Float.parseFloat(splited[4]));
-                else if (!floatValues.containsKey(splited[2]) && floatValues.containsKey(splited[4]) && floatValues.get(splited[4])!=0)
-                    floatValues.computeIfPresent(splited[0],(k,v)->Float.parseFloat(splited[2])/floatValues.get(splited[4]));
+
         }
     }
 }

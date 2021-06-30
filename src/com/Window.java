@@ -5,10 +5,10 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Window extends JFrame {
@@ -27,7 +27,18 @@ public class Window extends JFrame {
         Action loadAction = new AbstractAction("load file",new ImageIcon("src\\assets\\load.png")) {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String path = JOptionPane.showInputDialog("enter the path to load file");
+                try {
+                    String[] lines = Files.readAllLines(Path.of(path)).toArray(new String[0]);
+                    StringBuilder line = new StringBuilder();
+                    for (String str:lines){
+                        line.append(str);
+                        line.append("\r\n");
+                    }
+                    txtArea.setText(line.toString());
+                } catch (IOException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
         };
         Action saveAction = new AbstractAction("save file",new ImageIcon("src\\assets\\save.png")) {
@@ -45,7 +56,7 @@ public class Window extends JFrame {
                 }
             }
         };
-        Action saveRunAction = new AbstractAction("save compiled") {
+        Action saveRunAction = new AbstractAction("save compiled",new ImageIcon("src\\assets\\save run.jpg")) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -76,15 +87,6 @@ public class Window extends JFrame {
         fileMenu.add(saveAction);
         fileMenu.add(saveRunAction);
         fileMenu.add(clearAction);
-        ActionListener menuListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(fileMenu.getItemCount()==0){
-                    System.out.println("load");
-                }
-            }
-        };
-        fileMenu.addActionListener(menuListener);
 
         panel = new JPanel();
         southPanel = new JPanel();

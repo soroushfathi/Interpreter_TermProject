@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Window extends JFrame {
@@ -22,8 +21,12 @@ public class Window extends JFrame {
         // MenuBar
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        JMenu fileMenu = new JMenu("file");
+        JMenu fileMenu = new JMenu("File");
+        JMenu editMenu = new JMenu("Edit");
         menuBar.add(fileMenu);
+        menuBar.add(editMenu);
+        fileMenu.setMnemonic('F');
+        editMenu.setMnemonic('E');
         Action loadAction = new AbstractAction("load file",new ImageIcon("src\\assets\\load.png")) {
             @Override
             public void actionPerformed(ActionEvent e) {

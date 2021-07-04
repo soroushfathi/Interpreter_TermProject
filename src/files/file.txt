@@ -1,5 +1,10 @@
-int x = 3 
-  int    z =   5
-    int y =   z
+int x = 4
+   
+   int  y  = x
+flaot  PI = 3.14
 %%
-print x
+print  x
+print y
+y = x
+x   =  y  * 3
+    print x
